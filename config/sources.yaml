@@ -1,0 +1,125 @@
+# News sources for the morning briefing.
+#
+# Each source has:
+#   name     - shown in the printed digest
+#   url      - an RSS or Atom feed
+#   section  - one of: sector | engineering | computing | games | research
+#   max      - (optional) max items taken from this feed per run (default 15)
+#   include  - (optional) regex; an item is kept only if its title/summary matches
+#   exclude  - (optional) regex; an item is dropped if its title matches
+#
+# Some sites (Times Higher Education, Jisc, Advance HE, UUK, QAA, HESA, Ukie,
+# The Engineer) block feed readers or have no feed. They are covered through
+# Google News search feeds instead. Add your own the same way:
+#   https://news.google.com/rss/search?q=<query>+when:3d&hl=en-GB&gl=GB&ceid=GB:en
+#
+# Run `python -m digest sources` to check every feed still works.
+
+sources:
+  # ---- UK HE policy and sector ------------------------------------------
+  - name: Wonkhe
+    url: https://wonkhe.com/feed/
+    section: sector
+  - name: HEPI
+    url: https://hepi.ac.uk/feed/
+    section: sector
+  - name: Guardian – Universities
+    url: https://www.theguardian.com/education/universities/rss
+    section: sector
+  - name: BBC Education
+    url: https://feeds.bbci.co.uk/news/education/rss.xml
+    section: sector
+    include: "universit|student|degree|graduate|tuition|higher education|apprentice|skills|international"
+  - name: Department for Education
+    url: https://www.gov.uk/search/news-and-communications.atom?organisations%5B%5D=department-for-education
+    section: sector
+    include: "universit|student|higher education|degree|tuition|skills|apprentice|lifelong|LLE|OfS|further education|post-16"
+  - name: FT Education
+    url: https://www.ft.com/education?format=rss
+    section: sector
+    max: 8
+  - name: Times Higher Education (via Google News)
+    url: https://news.google.com/rss/search?q=site:timeshighereducation.com+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: sector
+    # drop job adverts and people/profile pages (titles that are just a name)
+    exclude: "\\bjobs?\\b|lecturers?|professors?\\b|fellow\\b|^([A-Z][\\w’'.-]+ ?){1,3} - Times Higher Education$"
+  - name: Regulators & sector bodies (via Google News)
+    url: https://news.google.com/rss/search?q=%28%22Office+for+Students%22+OR+%22Universities+UK%22+OR+Jisc+OR+%22Advance+HE%22+OR+QAA+OR+HESA+OR+UCAS%29+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: sector
+    include: "universit|student|degree|OfS|regulator|admission|UCAS|HESA|Jisc|Advance HE|QAA|UUK"
+    exclude: "Andhra|Amaravati|India"
+  - name: University World News (via Google News)
+    url: https://news.google.com/rss/search?q=site:universityworldnews.com+UK+when:3d&hl=en-GB&gl=GB&ceid=GB:en
+    section: sector
+    max: 6
+  - name: Inside Higher Ed (US)
+    url: https://www.insidehighered.com/rss.xml
+    section: sector
+    max: 5
+
+  # ---- Engineering ------------------------------------------------------
+  - name: Engineering education & skills (via Google News)
+    url: https://news.google.com/rss/search?q=engineering+%28university+OR+degree+OR+graduates+OR+apprenticeship+OR+skills%29+UK+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: engineering
+    exclude: "eduroam|cold weather|campus this week|Australia wants| - Loughborough University$"
+  - name: Engineering bodies (via Google News)
+    url: https://news.google.com/rss/search?q=%28%22Royal+Academy+of+Engineering%22+OR+%22Engineering+Council%22+OR+EngineeringUK+OR+IMechE+OR+%22Institution+of+Engineering+and+Technology%22%29+when:3d&hl=en-GB&gl=GB&ceid=GB:en
+    section: engineering
+  - name: The Engineer (via Google News)
+    url: https://news.google.com/rss/search?q=site:theengineer.co.uk+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: engineering
+    max: 8
+    exclude: "\\bjobs?\\b|lecturer|nozzle|troubleshoot|ordering|in stock|^([A-Z][\\w’'.-]+ ?){1,3} - The Engineer$"
+
+  # ---- Computer science & AI --------------------------------------------
+  - name: CPHC
+    url: https://www.cphc.ac.uk/feed/
+    section: computing
+  - name: Computer Weekly – IT careers & skills
+    url: https://www.computerweekly.com/rss/IT-careers-and-IT-skills.xml
+    section: computing
+  - name: The Register
+    url: https://www.theregister.com/headlines.atom
+    section: computing
+    include: "universit|student|academ|degree|graduate|skills|education|research|UK gov|DSIT"
+  - name: Computing in UK universities (via Google News)
+    url: https://news.google.com/rss/search?q=%28%22computer+science%22+OR+%22computing%22+OR+BCS+OR+%22AI%22%29+%28university+OR+degree+OR+students%29+UK+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: computing
+  - name: DSIT
+    url: https://www.gov.uk/search/news-and-communications.atom?organisations%5B%5D=department-for-science-innovation-and-technology
+    section: computing
+    max: 8
+
+  # ---- Games ------------------------------------------------------------
+  - name: GamesIndustry.biz
+    url: https://www.gamesindustry.biz/feed
+    section: games
+  - name: Game Developer
+    url: https://www.gamedeveloper.com/rss.xml
+    section: games
+    max: 10
+  - name: PocketGamer.biz
+    url: https://www.pocketgamer.biz/rss/
+    section: games
+    max: 8
+  - name: MCV/Develop
+    url: https://www.mcvuk.com/feed/
+    section: games
+  - name: UK games industry (via Google News)
+    url: https://news.google.com/rss/search?q=%28Ukie+OR+%22UK+games+industry%22+OR+%22UK+Games+Fund%22+OR+%22video+games+tax+relief%22+OR+%22games+studio%22+UK%29+when:2d&hl=en-GB&gl=GB&ceid=GB:en
+    section: games
+  - name: Games education (via Google News)
+    url: https://news.google.com/rss/search?q=%28%22games+design%22+OR+%22games+development%22+OR+%22game+design%22+OR+esports%29+%28university+OR+degree+OR+students+OR+graduates%29+UK+when:3d&hl=en-GB&gl=GB&ceid=GB:en
+    section: games
+
+  # ---- Research and funding --------------------------------------------
+  - name: UKRI
+    url: https://www.ukri.org/news/feed/
+    section: research
+  - name: Research funding (via Google News)
+    url: https://news.google.com/rss/search?q=%28EPSRC+OR+%22Innovate+UK%22+OR+%22Horizon+Europe%22+OR+REF+2029%29+university+when:3d&hl=en-GB&gl=GB&ceid=GB:en
+    section: research
+  - name: arXiv – computing education
+    url: https://export.arxiv.org/api/query?search_query=%28cat:cs.CY+OR+cat:cs.HC%29+AND+%28abs:%22computing+education%22+OR+abs:%22programming+education%22+OR+abs:%22engineering+education%22+OR+abs:%22game-based+learning%22%29&sortBy=submittedDate&sortOrder=descending&max_results=15
+    section: research
+    max: 8

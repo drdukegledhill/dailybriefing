@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>{{ settings.title }} – {{ date }}</title>
+<style>
+  @font-face { font-family: "Masthead"; src: url("{{ font('PlayfairDisplay-900.woff') }}"); font-weight: 900; }
+  @font-face { font-family: "Serif"; src: url("{{ font('SourceSerif4-400.woff') }}"); font-weight: 400; }
+  @font-face { font-family: "Serif"; src: url("{{ font('SourceSerif4-600.woff') }}"); font-weight: 600; }
+  @font-face { font-family: "Serif"; src: url("{{ font('SourceSerif4-700.woff') }}"); font-weight: 700; }
+  @font-face { font-family: "Serif"; src: url("{{ font('SourceSerif4-400italic.woff') }}"); font-weight: 400; font-style: italic; }
+  @font-face { font-family: "Serif"; src: url("{{ font('SourceSerif4-600italic.woff') }}"); font-weight: 600; font-style: italic; }
+  @font-face { font-family: "Sans"; src: url("{{ font('LibreFranklin-500.woff') }}"); font-weight: 500; }
+  @font-face { font-family: "Sans"; src: url("{{ font('LibreFranklin-700.woff') }}"); font-weight: 700; }
+  @font-face { font-family: "Sans"; src: url("{{ font('LibreFranklin-800.woff') }}"); font-weight: 800; }
+
+  @page {
+    size: A4;
+    margin: 11mm 12mm 14mm 12mm;
+    @bottom-left  { content: "{{ settings.title }}"; font: 500 6.8pt "Sans"; color: #444; border-top: 0.5pt solid #000; padding-top: 1.2mm; vertical-align: top; }
+    @bottom-center { content: "{{ date }}"; font: 500 6.8pt "Sans"; color: #444; border-top: 0.5pt solid #000; padding-top: 1.2mm; vertical-align: top; }
+    @bottom-right { content: counter(page); font: 700 7.5pt "Sans"; border-top: 0.5pt solid #000; padding-top: 1.2mm; vertical-align: top; }
+  }
+
+  * { box-sizing: border-box; }
+  /* Colour: University of Huddersfield brand palette (as in the SCE Open Day interface's
+     brand.css). Text stays black; colour marks the sections, the main rules and a few panels.
+     Engineering, computing and games use the same colours as the interface. */
+  :root { --accent: #1a1464; /* indigo */ --tint: #f1f1f8; /* canvas */ --hair: #d6d5e8; }
+  .sec-sector      { --c: #1a1464; }  /* indigo */
+  .sec-engineering { --c: #006b4b; }  /* jade, ink shade */
+  .sec-computing   { --c: #2a33ff; }  /* electric */
+  .sec-games       { --c: #a03c08; }  /* coral, ink shade */
+  .sec-research    { --c: #c03369; }  /* magenta */
+  body { font: 8.9pt/1.36 "Serif", Georgia, serif; color: #000; margin: 0; hyphens: auto; }
+  p { margin: 0; }
+  .justify { text-align: justify; }
+
+  /* ---- Masthead ------------------------------------------------------ */
+  .ears { display: flex; justify-content: space-between; align-items: flex-end; font: 500 6.8pt/1.3 "Sans"; text-transform: uppercase; letter-spacing: 0.7pt; }
+  .ears > div { width: 62mm; }
+  .ears .right { text-align: right; }
+  .ears .issue { color: var(--accent); font-weight: 700; }
+  .ears .logo img { height: 9mm; display: block; }
+  .nameplate { text-align: center; color: var(--accent); font: 900 40pt/1 "Masthead", serif; letter-spacing: -0.4pt; margin: 1mm 0 2mm; }
+  .dateline { border-top: 2.2pt solid var(--accent); border-bottom: 0.6pt solid #000; margin-top: 0.6mm; padding: 1.1mm 0; display: flex; justify-content: space-between; font: 600 7pt "Sans"; text-transform: uppercase; letter-spacing: 0.6pt; position: relative; }
+  .dateline::before { content: ""; position: absolute; left: 0; right: 0; top: -1.5mm; border-top: 0.6pt solid #000; }
+  .standfirst { font: italic 400 10.2pt/1.4 "Serif"; text-align: center; margin: 2.4mm 8mm 0; padding-bottom: 2.4mm; border-bottom: 0.6pt solid #000; }
+
+  /* ---- Shared type ---------------------------------------------------- */
+  .kicker { font: 800 6.8pt "Sans"; text-transform: uppercase; letter-spacing: 0.9pt; color: var(--c, var(--accent)); }
+  .sources { font: 500 6.6pt/1.3 "Sans"; color: #444; margin-top: 0.8mm; }
+  h1, h2, h3, h4 { font-family: "Serif"; margin: 0; hyphens: manual; }
+
+  /* ---- Lead story ----------------------------------------------------- */
+  .splash { display: flex; gap: 5mm; padding: 3mm 0 3mm; border-bottom: 0.6pt solid #000; }
+  .splash .main { flex: 1; }
+  .splash h1 { font-weight: 700; font-size: 21pt; line-height: 1.06; letter-spacing: -0.25pt; margin: 0.8mm 0 2mm; }
+  .splash .body { font-size: 10pt; line-height: 1.42; }
+  .splash .body { text-align-last: left; }
+  .splash aside { width: 52mm; flex: none; background: var(--tint); border-left: 2pt solid var(--accent); padding: 2.5mm 3mm 3mm; }
+  .splash aside p { font: italic 400 9.2pt/1.4 "Serif"; margin-top: 1mm; }
+  .splash .qr { margin-top: 2.5mm; display: flex; gap: 2mm; align-items: flex-end; }
+  .splash .qr svg { width: 17mm; height: 17mm; }
+  .qr-note { font: 500 6.2pt/1.25 "Sans"; color: #444; }
+
+  /* ---- Other top stories ---------------------------------------------- */
+  .tops { display: flex; padding: 2.6mm 0 3mm; }
+  .tops .story { flex: 1; padding: 0 3.5mm; border-left: 0.6pt solid #000; }
+  .tops .story:first-child { padding-left: 0; border-left: 0; }
+  .tops .story:last-child { padding-right: 0; }
+  .tops h2 { font-weight: 700; font-size: 12pt; line-height: 1.12; margin: 0.6mm 0 1.4mm; }
+  .tops .why { margin-top: 1.2mm; }
+  .tops .why b { font: 700 6.6pt "Sans"; text-transform: uppercase; letter-spacing: 0.5pt; color: var(--accent); }
+  .tops .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 2mm; }
+  .tops .foot svg { width: 12mm; height: 12mm; flex: none; margin-top: 1mm; }
+
+  /* ---- Analysis (front page) ----------------------------------------- */
+  .analysis { border-top: 2.2pt solid var(--accent); background: var(--tint); padding: 2mm 3mm 2.6mm; margin-top: 0; break-inside: avoid; }
+  .trends { display: flex; margin-top: 1mm; }
+  .trend { flex: 1; padding: 0 3.5mm; border-left: 0.6pt solid var(--hair); }
+  .trend:first-child { padding-left: 0; border-left: 0; }
+  .trend:last-child { padding-right: 0; }
+  .trend h4 { font: italic 600 10.5pt/1.2 "Serif"; margin-bottom: 0.8mm; }
+
+  /* ---- Inside page ----------------------------------------------------- */
+  .inside { break-before: page; }
+  .band-title { border-bottom: 2.2pt solid var(--accent); padding-bottom: 1mm; margin: 0 0 2.4mm; }
+  .band-title h2 { font: 700 15pt "Serif"; }
+  .columns { column-count: 3; column-gap: 5mm; column-rule: 0.5pt solid #000; }
+  .section-head { border-top: 1.6pt solid var(--c, #000); padding-top: 0.8mm; margin-bottom: 1.4mm; break-after: avoid; }
+  .columns .section + .section .section-head { margin-top: 2.6mm; }
+  .entry { margin-bottom: 2.4mm; break-inside: avoid; }
+  .entry h3 { font-weight: 700; font-size: 9.6pt; line-height: 1.18; margin-bottom: 0.6mm; }
+  .entry p { font-size: 8.7pt; }
+
+  .reading { border-top: 2.2pt solid var(--accent); padding-top: 2mm; margin-top: 3mm; break-inside: avoid; }
+  .reads { display: flex; gap: 5mm; }
+  .read { flex: 1; display: flex; gap: 2mm; margin-top: 1.4mm; }
+  .read svg { width: 13mm; height: 13mm; flex: none; }
+  .read h4 { font: 700 8.8pt/1.2 "Serif"; }
+  .read p { font-size: 8pt; line-height: 1.3; }
+
+  .note { margin-top: 3mm; background: var(--tint); border-left: 3pt solid var(--accent); padding: 2mm 3mm; break-inside: avoid; }
+  .note p { font: italic 400 9.6pt/1.4 "Serif"; margin-top: 0.6mm; }
+  .colophon { margin-top: 2.5mm; font: 500 6.3pt/1.35 "Sans"; color: #555; }
+
+  /* When the archived HTML is opened in a browser, show it like a sheet of A4. */
+  @media screen {
+    html { background: #d8d8d8; }
+    body { background: #fff; width: 210mm; margin: 8mm auto; padding: 11mm 12mm 14mm; box-shadow: 0 1px 6px rgba(0,0,0,.25); }
+  }
+</style>
+</head>
+<body>
+
+{% macro sources_of(r) -%}
+  {%- set names = r | map(attribute='source') | unique | list -%}
+  {{ names[:4] | join(' · ') }}{% if names | length > 4 %} and {{ names | length - 4 }} more{% endif %}
+{%- endmacro %}
+
+<header>
+  <div class="ears">
+    {% if logo() %}
+    <div class="logo"><img src="{{ logo() }}" alt="University of Huddersfield"></div>
+    <div class="right">{% if issue %}<span class="issue">No. {{ issue }}</span> · {% endif %}Weekday edition<br>{{ total_items }} stories read from {{ source_count }} sources</div>
+    {% else %}
+    <div>{% if issue %}<span class="issue">No. {{ issue }}</span><br>{% endif %}Weekday edition</div>
+    <div class="right">{{ total_items }} stories read<br>from {{ source_count }} sources</div>
+    {% endif %}
+  </div>
+  <div class="nameplate">{{ settings.title }}</div>
+  <div class="dateline">
+    <span>{{ date }}</span>
+    <span>{{ settings.subtitle }}</span>
+    <span>Published {{ generated }}</span>
+  </div>
+  {% if d.lead %}<p class="standfirst">{{ d.lead }}</p>{% endif %}
+</header>
+
+{% if d.top_stories %}
+  {% set s = d.top_stories[0] %}
+  {% set r = refs(s.item_ids) %}
+  <section class="splash">
+    <div class="main">
+      {% if r %}<div class="kicker sec-{{ r[0].section }}">{{ sections[r[0].section] }}</div>{% endif %}
+      <h1>{{ s.title }}</h1>
+      <p class="body justify">{{ s.summary }}</p>
+      {% if r %}<div class="sources">{{ sources_of(r) }}</div>{% endif %}
+    </div>
+    <aside>
+      <div class="kicker">Why it matters</div>
+      <p>{{ s.why_it_matters }}</p>
+      {% if r and r[0].link %}
+      <div class="qr">{{ r[0].link | qr | safe }}<span class="qr-note">Scan to read<br>the full story</span></div>
+      {% endif %}
+    </aside>
+  </section>
+
+  {% if d.top_stories | length > 1 %}
+  <section class="tops">
+    {% for s in d.top_stories[1:] %}
+      {% set r = refs(s.item_ids) %}
+      <article class="story">
+        {% if r %}<div class="kicker sec-{{ r[0].section }}">{{ sections[r[0].section] }}</div>{% endif %}
+        <h2>{{ s.title }}</h2>
+        <p class="justify">{{ s.summary }}</p>
+        <p class="why justify"><b>Why it matters</b> {{ s.why_it_matters }}</p>
+        <div class="foot">
+          <div class="sources">{% if r %}{{ sources_of(r) }}{% endif %}</div>
+          {% if r and r[0].link %}{{ r[0].link | qr | safe }}{% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+{% endif %}
+
+{% if d.trends %}
+<section class="analysis">
+  <div class="kicker">Analysis · Patterns &amp; trends</div>
+  <div class="trends">
+    {% for t in d.trends %}
+    <div class="trend"><h4>{{ t.title }}</h4><p class="justify">{{ t.explanation }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{# ---------------- Inside page ---------------- #}
+<div id="inside" class="inside">
+{% if d.sections %}
+<div class="band-title"><h2>News in brief</h2></div>
+<div class="columns">
+  {% for sec in d.sections %}
+  <div class="section">
+    <div class="section-head kicker sec-{{ sec.section }}">{{ sections[sec.section] }}</div>
+    {% for e in sec.entries %}
+      {% set r = refs(e.item_ids) %}
+      <div class="entry">
+        <h3>{{ e.title }}</h3>
+        {% if e.summary %}<p class="justify">{{ e.summary }}</p>{% endif %}
+        {% if r %}<div class="sources">{{ sources_of(r) }}</div>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if d.worth_reading %}
+<section class="reading">
+  <div class="kicker">Worth reading in full</div>
+  <div class="reads">
+  {% for w in d.worth_reading %}
+    {% set it = item(w.item_id) %}
+    {% if it %}
+    <div class="read">
+      {{ it.link | qr | safe }}
+      <div><h4>{{ it.title }}</h4><div class="sources" style="margin:0.3mm 0 0.5mm">{{ it.source }}</div><p>{{ w.reason }}</p></div>
+    </div>
+    {% endif %}
+  {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if d.one_thing %}
+<div class="note"><div class="kicker">One thing for today</div><p>{{ d.one_thing }}</p></div>
+{% endif %}
+
+<div class="colophon">
+  Edited by {{ ai_name }} from headlines and feed snippets at {{ generated }}; check the original before acting on anything here.
+  {% if errors %}Feeds unavailable today: {{ errors.keys() | join(', ') }}.{% endif %}
+</div>
+</div>
+
+</body>
+</html>

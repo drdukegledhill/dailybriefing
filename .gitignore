@@ -1,0 +1,16 @@
+# Secrets and local settings: never commit
+.env
+.env.*
+!.env.example
+
+# Generated and personal data
+data/
+briefings/
+*.pdf
+
+# Python and OS clutter
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.zip
