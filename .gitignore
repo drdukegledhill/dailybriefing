@@ -14,3 +14,11 @@ __pycache__/
 *.pyc
 .DS_Store
 *.zip
+
+# Not for the repo
+LinkedIn Article.docx
+
+# Your own logo for the masthead (not shared: brand assets belong to their owners)
+templates/brand/*
+!templates/brand/README.txt
+~$*

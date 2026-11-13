@@ -17,7 +17,7 @@ It's built to run unattended on a Raspberry Pi. It costs about 5p a day in API c
 - **Worth reading in full**: up to three longer pieces, with QR codes.
 - **One thing for today**: a single practical suggestion based on the news.
 
-It's styled in University of Huddersfield colours. The section colours match the SCE open day interface.
+It's styled in University of Huddersfield colours. The section colours match the SCE open day interface. The University logo isn't included in this repository, so before you run it on your own hardware you'll need to add your own logo (see [Making it yours](#making-it-yours)). Without one, the masthead shows the title in text only.
 
 ## How it works
 
@@ -123,8 +123,9 @@ E-ink holds the picture without power, so the last status stays up all day. If t
 - **[`config/profile.md`](config/profile.md)** tells the editor who you are, what matters and what to ignore. It's the most effective thing to change.
 - **[`config/sources.yaml`](config/sources.yaml)** lists the feeds, with optional include and exclude filters. Sites without usable feeds are covered through Google News search feeds. Run `./brief.sh sources` to check every feed works.
 - **[`.env.example`](.env.example)** lists every setting: model, effort, output folder, page limit, catch-up window, printing, screen, masthead title.
-- **[`templates/digest.html.j2`](templates/digest.html.j2)** is the layout. The colours are at the top of its styles. To remove the logo, delete `templates/brand/uoh-logo.png`; the masthead then shows text only.
+- **[`templates/digest.html.j2`](templates/digest.html.j2)** is the layout. The colours are at the top of its styles.
 - **[`digest/editorial.py`](digest/editorial.py)** holds the editor's rules and the JSON schema for the reply.
+- **Your logo** goes in `templates/brand/logo.png` (a PNG with a transparent background, about 4:1 wide). It isn't included in the repository, and git ignores that folder, so your own brand files stay out of it too. You may also want to change the University colours at the top of the template.
 
 ### Sources included
 
@@ -151,7 +152,7 @@ digest/
   printing.py         IPP printing, no drivers
   screen.py           Inky pHAT status screen
   store.py            SQLite memory of past issues and seen stories
-templates/            the layout, fonts and logo
+templates/            the layout and fonts; your logo goes in templates/brand/
 data/                 created on first run: memory, archive, the day's request and reply (not in git)
 briefings/            your PDFs (not in git)
 ```
@@ -161,6 +162,6 @@ briefings/            your PDFs (not in git)
 The code is released under the **[PolyForm Noncommercial License 1.0.0](LICENSE)**. You're free to use, change and share it for personal use, research, education and other noncommercial purposes. Commercial use isn't permitted.
 
 These parts are not covered by that licence:
-- **The University of Huddersfield logo** (`templates/brand/`) is the University's trademark, included for internal use only. If you're not at the University, delete it.
+- **Logos.** No logo is included. The University of Huddersfield's name and colours remain the University's, and you'll need to supply your own logo.
 - **The fonts** (`templates/fonts/`) are Playfair Display, Source Serif 4 and Libre Franklin, under the SIL Open Font License 1.1. Their licences are alongside them.
 - **News content** in generated briefings belongs to its publishers. The briefing summarises it and links back to the originals.

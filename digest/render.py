@@ -33,8 +33,8 @@ def _font(name: str) -> str:
 
 
 def _logo() -> str:
-    """The University logo as a data URI, or "" if it's missing."""
-    path = TEMPLATES / "brand" / "uoh-logo.png"
+    """Your logo (templates/brand/logo.png) as a data URI, or "" if there isn't one."""
+    path = TEMPLATES / "brand" / "logo.png"
     if not path.exists():
         return ""
     return "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode()
